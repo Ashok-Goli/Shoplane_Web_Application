@@ -107,9 +107,15 @@ for (var i = 0; i < differentCartItems.length; i++) {
 }
 
 function orderPlaced(){
-    localStorage.removeItem("cartProducts")
-    localStorage.removeItem("id")
-    localStorage.removeItem("cartCount")
+    if($("#differentcount").text()==0){
+        $("#href").attr("href","Cart Page.html")
+        alert("Your Cart is Empty!!")
+    }else{
+        $("#href").attr("href","Order Page.html")
+        localStorage.removeItem("cartProducts")
+        localStorage.removeItem("id")
+        localStorage.removeItem("cartCount")
+    }
 }
 
 //Footer Section
