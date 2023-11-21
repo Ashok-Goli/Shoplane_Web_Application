@@ -13,15 +13,15 @@ owl.owlCarousel({
 });
 
 //Header Section
-document.getElementById("header").innerHTML+= `
+document.getElementById("header").innerHTML += `
 <div id="title-wrapper">
-<div id="logo"><a href="index.html" id="title"><span id="shop">SHOP</span>LANE</a></div>
+<div id="logo"><a href="Home Page.html" id="title"><span id="shop">SHOP</span>LANE</a></div>
 <a href="#clothing-section">CLOTHING</a>
 <a href="#accessory-section">ACCESSORIES</a>
 </div>
 <div id="search-wrapper">
 <i class="fa-solid fa-magnifying-glass"></i>
-<input type="text" placeholder="Search for Clothing and Accessories" />
+<input id="searchBox" type="text" placeholder="Search for Clothing and Accessories" />
 </div>
 <div id="cart-signin-wrapper">
 <div id="cart-wrapper">
@@ -30,6 +30,7 @@ document.getElementById("header").innerHTML+= `
 </div>
 <img src="https://test-hosting-8f9bf.web.app/assets/avatar.jpg" />
 </div>`
+
 
 
 
@@ -82,21 +83,65 @@ $.get("https://5d76bf96515d1a0014085cf9.mockapi.io/product", function (response)
 
 //Product Page Data
 
-function selectedProduct(id){
-    localStorage.setItem("id",id)
+function selectedProduct(id) {
+    localStorage.setItem("id", id)
 }
 
 var count = JSON.parse(localStorage.getItem("cartCount"))
 var cartCountElement = document.getElementById("item-count")
-if(count == null){
+if (count == null) {
     cartCountElement.innerText = 0
-}else{
+} else {
     cartCountElement.innerText = count
+}
+
+// Search Functonality
+var searchBox = document.getElementById("searchBox")
+searchBox.onchange = function () {
+    var val = searchBox.value
+    $.get("https://5d76bf96515d1a0014085cf9.mockapi.io/product", function (response) {
+        var productList = response
+        var clothingSection = document.getElementById("clothing-section")
+        clothingSection.innerHTML = `<div id="clothing-grid" class="product-grid">
+            </div>`
+        var accessorySection = document.getElementById("accessory-section")
+        accessorySection.style.display = "none"
+        var count = 0
+        console.log(productList.length)
+        var clothingGrid = document.getElementById("clothing-grid")
+        for (var i = 0; i < productList.length; i++) {
+            var name = productList[i].name
+            var brand = productList[i].brand
+            var description = productList[i].description
+            if ((name.match(val) == null) && (brand.match(val) == null) && (description.match(val) == null)) {
+                count+=1
+                console.log(count)
+                continue
+            } else if ((name.match(val) != null) || (brand.match(val) != null) || (description.match(val) != null)) {
+                clothingGrid.innerHTML += `
+                 <div class="product-card" id=${i} onclick = "selectedProduct(parseInt(id)+1)">
+                    <a href="Product Page.html?p=${productList[i].id}">
+                        <img class="product-image" src=${productList[i].preview} alt=${productList[i].name} pic />
+                    </a>
+                    <div class="product-meta">
+                        <h4>${productList[i].name}</h4>
+                        <h5>${productList[i].brand}</h5>
+                        <p>Rs ${productList[i].price}</p>
+                    </div>
+                </div>`
+            }
+        }
+        if(count == productList.length){
+            console.log(count)
+            clothingGrid.innerHTML = `<h1 id = "Notfound"> Not Found ❌ </h1>`
+        }
+    })
+    searchBox.value = ""
 }
 
 //Footer Section
 var footer = document.getElementById("footer")
-footer.innerHTML+=`
+footer.innerHTML += `
 <div>
 <p class="footer-heading">Online store</p>
 <a href="#clothing-section" class="footer-link">Men Clothing</a>
