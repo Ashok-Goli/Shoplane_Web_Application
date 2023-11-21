@@ -50,6 +50,7 @@ header{
     width: 100%;
     max-width: 400px;
     position: relative;
+    display: flex;
 }
 #search-wrapper i{
     position: absolute;
@@ -58,6 +59,13 @@ header{
     top: 50%;
     left: 18px;
     transform: translateY(-50%);
+}
+#search{
+    border: none;
+    cursor: pointer;
+    margin-left: 10px;
+    color: #999;
+    font-weight: 500;
 }
 #search-wrapper input{
     width: 100%;
@@ -288,6 +296,11 @@ footer > div {
     border-radius: 5px;
     padding: 4px;
     /* border: 2px solid gray; */
+}
+#Notfound{
+    font-size: 100px;
+    color: red;
+    margin-left: 350px;
 }
 .active-image{
     box-sizing: content-box;
